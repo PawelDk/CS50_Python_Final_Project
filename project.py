@@ -72,18 +72,23 @@ class Mortgage:
             return first_month_payment
 
     def calculate_payment_schedule(self):
+        keys = range(1, self.period_in_months+1)
         if self.installments_type == 'equal':
-            return [self.monthly_payment] * self.period_in_months
+            payments = [self.monthly_payment] * self.period_in_months
 
         elif self.installments_type == 'decreasing':
-            schedule = []
+            payments = []
             for month in reversed(range(1, self.period_in_months + 1)):
                 installment = self.loan_amount/self.period_in_months * (1 + (month * self.nominal_rate/100/12))
-                schedule.append(installment)
-            return schedule
+                payments.append(installment)
+
+        return dict(zip(keys, payments))
 
     def calculate_total_amount(self):
-        return sum(self.payment_schedule)
+        total = 0
+        for key in self.payment_schedule.keys():
+            total += self.payment_schedule[key]
+        return total
 
     def calculate_total_interest(self):
         return self.total_amount - self.loan_amount
@@ -97,9 +102,3 @@ if __name__ == '__main__':
     print("Total interest: " + str(mortgage.total_interest))
     print("Monthly payment: " + str(mortgage.monthly_payment))
     print("Payment schedule:\n" + str(mortgage.payment_schedule))
-
-
-
-
-
-
