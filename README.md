@@ -7,7 +7,9 @@ A program that calculates various parameters of a mortgage loan.
 - calculate the total amount to be paid,
 - calculate the total interest on the loan,
 - calculate monthly payment (first month payment for decreasing installments),
-- generate basic payment schedule,
+- generate basic payment schedule, including for each month:
+  - installment amount
+  - remaining amount
 ####Optional:
 - calculate effect of one-time overpayment - updated monthly payment and difference or number of months reduced,
 - generate payment schedule with overpayment (one-time or recurrent)
