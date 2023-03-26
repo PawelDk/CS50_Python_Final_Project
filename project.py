@@ -1,6 +1,11 @@
 import argparse
 import pandas as pd
 
+INSTALLMENTS_TYPE_EQUAL = 'equal'
+INSTALLMENTS_TYPE_DECREASING = 'decreasing'
+OVERPAYMENT_TYPE_ONE_TIME = 'one-time'
+OVERPAYMENT_TYPE_MONTHLY = 'monthly'
+
 parser = argparse.ArgumentParser()
 parser.add_argument('--loan', '-l', help="Loan amount, USD", type=int)
 parser.add_argument('--rate', '-r', help="Nominal interest rate (per year), %", type=int)
@@ -60,7 +65,7 @@ class Mortgage:
 
     @installments_type.setter
     def installments_type(self, installments_type):
-        if installments_type not in ['equal', 'decreasing']:
+        if installments_type not in [INSTALLMENTS_TYPE_EQUAL, INSTALLMENTS_TYPE_DECREASING]:
             raise ValueError
         self._installments_type = installments_type
 
@@ -80,12 +85,12 @@ class Mortgage:
 
     @overpayment_type.setter
     def overpayment_type(self, overpayment_type):
-        if overpayment_type not in ['one-time', 'monthly']:
+        if overpayment_type not in [OVERPAYMENT_TYPE_ONE_TIME, OVERPAYMENT_TYPE_MONTHLY]:
             raise ValueError
         self._overpayment_type = overpayment_type
 
     def calculate_monthly_payment(self):
-        if self.installments_type == 'equal':
+        if self.installments_type == INSTALLMENTS_TYPE_EQUAL:
             sigma = 0
             i = 1
             while i <= self.period_in_months:
@@ -94,16 +99,16 @@ class Mortgage:
             monthly_payment = self.loan_amount / sigma
             return round(monthly_payment, 2)
 
-        elif self.installments_type == 'decreasing':
+        elif self.installments_type == INSTALLMENTS_TYPE_DECREASING:
             first_month_payment = self.loan_amount / self.period_in_months * \
                                   (1 + (self.period_in_months * self.nominal_rate / 100 / 12))
             return round(first_month_payment, 2)
 
     def calculate_all_installments(self):
-        if self.installments_type == 'equal':
+        if self.installments_type == INSTALLMENTS_TYPE_EQUAL:
             return [self.monthly_payment] * self.period_in_months
 
-        elif self.installments_type == 'decreasing':
+        elif self.installments_type == INSTALLMENTS_TYPE_DECREASING:
             all_installments = []
             for month in reversed(range(1, self.period_in_months + 1)):
                 installment = self.loan_amount / self.period_in_months * (1 + (month * self.nominal_rate / 100 / 12))
