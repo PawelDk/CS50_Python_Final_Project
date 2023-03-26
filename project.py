@@ -22,11 +22,20 @@ class Mortgage:
         self.installments_type = installments_type
         self.overpayment = overpayment
         self.overpayment_type = overpayment_type
-        self.monthly_payment = self.calculate_monthly_payment()
-        self.all_installments = self.calculate_all_installments()
-        self.total_amount = self.calculate_total_amount()
-        self.total_interest = self.calculate_total_interest()
-        self.remaining = self.calculate_remaining()
+
+        self.monthly_payment = None
+        self.all_installments = None
+        self.total_amount = None
+        self.total_interest = None
+        self.remaining = None
+        self.new_monthly_payment = None
+        self.new_all_installments = None
+        self.new_total_amount = None
+        self.new_total_interest = None
+        self.new_remaining = None
+
+        self.calculate_loan_characteristics()
+
         self.payment_schedule = self.generate_payment_schedule()
 
     @property
@@ -75,9 +84,10 @@ class Mortgage:
 
     @overpayment.setter
     def overpayment(self, overpayment):
-        if overpayment <= 0 or overpayment > self.loan_amount:
-            raise ValueError
-        self._overpayment = overpayment
+        if overpayment:
+            if overpayment <= 0 or overpayment > self.loan_amount:
+                raise ValueError
+            self._overpayment = overpayment
 
     @property
     def overpayment_type(self):
@@ -85,22 +95,49 @@ class Mortgage:
 
     @overpayment_type.setter
     def overpayment_type(self, overpayment_type):
-        if overpayment_type not in [OVERPAYMENT_TYPE_ONE_TIME, OVERPAYMENT_TYPE_MONTHLY]:
+        if overpayment_type not in [OVERPAYMENT_TYPE_ONE_TIME, OVERPAYMENT_TYPE_MONTHLY, None]:
             raise ValueError
         self._overpayment_type = overpayment_type
 
-    def calculate_monthly_payment(self):
+    def calculate_loan_characteristics(self):
+        # all characteristics
+        self.monthly_payment = self.calculate_monthly_payment()
+        self.all_installments = self.calculate_all_installments()
+        self.total_amount = self.calculate_total_amount()
+        self.total_interest = self.calculate_total_interest()
+        self.remaining = self.calculate_remaining()
+
+        # all characteristics updated by overpayment
+        if self.overpayment:
+            if self.overpayment_type == OVERPAYMENT_TYPE_ONE_TIME:
+                self.new_monthly_payment = self.calculate_monthly_payment(overpayment=self.overpayment,
+                                                                          overpayment_type=self.overpayment_type)
+                # todo add modification to rest of characteristics
+                # self.new_all_installments = self.calculate_all_installments()
+                # self.new_total_amount = self.calculate_total_amount()
+                # self.new_total_interest = self.calculate_total_interest()
+                # self.new_remaining = self.calculate_remaining()
+
+            elif self.overpayment_type == OVERPAYMENT_TYPE_MONTHLY:
+                ...
+
+    def calculate_monthly_payment(self, **kwargs):
+        if kwargs:
+            overpayment = kwargs['overpayment']
+        else:
+            overpayment = 0
+
         if self.installments_type == INSTALLMENTS_TYPE_EQUAL:
             sigma = 0
             i = 1
             while i <= self.period_in_months:
                 sigma += (1 + self.nominal_rate / 100 / 12) ** (-i)
                 i += 1
-            monthly_payment = self.loan_amount / sigma
+            monthly_payment = (self.loan_amount - overpayment) / sigma
             return round(monthly_payment, 2)
 
         elif self.installments_type == INSTALLMENTS_TYPE_DECREASING:
-            first_month_payment = self.loan_amount / self.period_in_months * \
+            first_month_payment = (self.loan_amount - overpayment) / self.period_in_months * \
                                   (1 + (self.period_in_months * self.nominal_rate / 100 / 12))
             return round(first_month_payment, 2)
 
@@ -150,5 +187,6 @@ if __name__ == '__main__':
     print("All installments:\n" + str(mortgage.all_installments))
     print("Remaining:\n" + str(mortgage.remaining))
     print("Payment schedule:\n" + str(mortgage.payment_schedule))
+    print("New monthly payment: " + str(mortgage.new_monthly_payment))
 
     save_schedule_to_csv("Payment_schedule.csv")
