@@ -11,7 +11,7 @@ A program that calculates various parameters of a mortgage loan.
   - installment amount
   - remaining amount
 ####Optional:
-- calculate effect of one-time overpayment - updated monthly payment and difference or number of months reduced,
+- calculate effect of one-time overpayment - lower monthly payment or number of months reduced,
 - generate payment schedule with overpayment (one-time or recurrent)
 - calculate total savings resulting from overpayment (one-time or recurrent),
 
