@@ -17,8 +17,8 @@ parser.add_argument('--overpayment_type', '-ot', help="Overpayment type [one-tim
 class Mortgage:
     def __init__(self, loan_amount, nominal_rate, period_in_months, installments_type,
                  overpayment=None, overpayment_type=None):
-        self.loan_amount = loan_amount
-        self.nominal_rate = nominal_rate
+        self.loan_amount = float(loan_amount)
+        self.nominal_rate = float(nominal_rate)
         self.period_in_months = period_in_months
         self.installments_type = installments_type
         self.overpayment = overpayment
@@ -36,8 +36,12 @@ class Mortgage:
         self.new_remaining = None
 
         self.calculate_loan_characteristics()
+        self.overpayment_saving = self.calculate_overpayment_saving()
 
+        self.mortgage_sheet = self.generate_mortgage_sheet()
+        self.calculation_summary = self.generate_calculation_summary()
         self.payment_schedule = self.generate_payment_schedule()
+        # todo generate_payment_schedule_with_overpayment_effect()
 
     @property
     def loan_amount(self):
@@ -183,6 +187,9 @@ class Mortgage:
 
         return remaining
 
+    def calculate_overpayment_saving(self):
+        return round(self.total_interest - self.new_total_interest, 2)
+
     def generate_payment_schedule(self):
         data = {'Installments': self.all_installments,
                 'Remaining': self.remaining}
@@ -192,13 +199,30 @@ class Mortgage:
     def generate_payment_schedule_with_overpayment_effect(self):
         ...
 
+    def generate_mortgage_sheet(self):
+        all_data = [self.loan_amount, self.nominal_rate, self.period_in_months, self.installments_type]
+        row_labels = ['Loan amount', 'Nominal interest rate, %', 'Repayment period, months', 'Type of installments']
+        if self.overpayment:
+            all_data += ['------', self.overpayment, self.overpayment_type]
+            row_labels += ['---', 'Overpayment', 'Overpayment type']
+
+        data = {'Mortgage attributes': all_data}
+
+        return pd.DataFrame(data=data, index=row_labels)
+
+    def generate_calculation_summary(self):
+        all_data = [self.total_amount, self.total_interest, self.monthly_payment]
+        row_labels = ['Repayment amount', 'Total interest', 'Monthly payment']
+        if self.overpayment:
+            all_data += ['------', self.overpayment_saving, self.new_total_amount, self.new_total_interest, self.new_monthly_payment]
+            row_labels += ['---', 'Overpayment saving', 'New repayment amount', 'New total interest', 'New monthly payment', ]
+        data = {'Calculation result': all_data}
+
+        return pd.DataFrame(data=data, index=row_labels)
+
 
 def save_schedule_to_csv(path_to_save):
     mortgage.payment_schedule.to_csv(path_to_save)
-
-
-def calculate_overpayment_saving():
-    return round(mortgage.total_interest - mortgage.new_total_interest, 2)
 
 
 if __name__ == '__main__':
@@ -215,19 +239,10 @@ if __name__ == '__main__':
 
     mortgage = Mortgage(args.loan, args.rate, args.months, args.installments, args.overpayment, args.overpayment_type)
 
-    print("Payment schedule:\n" + str(mortgage.payment_schedule))
-    print("Total amount: " + str(mortgage.total_amount))
-    print("Total interest: " + str(mortgage.total_interest))
-    print("Monthly payment: " + str(mortgage.monthly_payment))
-    print("All installments:\n" + str(mortgage.all_installments))
-    print("Remaining:\n" + str(mortgage.remaining))
-    print("--- OVERPAYMENT (" + str(mortgage.overpayment) + ") ---")
-    print("New Total amount: " + str(mortgage.new_total_amount))
-    print("New Total interest: " + str(mortgage.new_total_interest))
-    print("New monthly payment: " + str(mortgage.new_monthly_payment))
-    print("New Monthly payment: " + str(mortgage.new_monthly_payment))
-    print("New All installments:\n" + str(mortgage.new_all_installments))
-    print("New Remaining:\n" + str(mortgage.new_remaining))
-    print("Overpayment saving:\n" + str(calculate_overpayment_saving()))
+    print(mortgage.mortgage_sheet)
+    print()
+    print(mortgage.calculation_summary)
+    print()
+    print(mortgage.payment_schedule)
 
     save_schedule_to_csv("Payment_schedule.csv")
