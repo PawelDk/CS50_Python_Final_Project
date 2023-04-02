@@ -41,7 +41,7 @@ class Mortgage:
         self.mortgage_sheet = self.generate_mortgage_sheet()
         self.calculation_summary = self.generate_calculation_summary()
         self.payment_schedule = self.generate_payment_schedule()
-        # todo generate_payment_schedule_with_overpayment_effect()
+        self.payment_schedule_with_overpayment = self.generate_payment_schedule_with_overpayment()
 
     @property
     def loan_amount(self):
@@ -196,8 +196,11 @@ class Mortgage:
         row_labels = range(1, self.period_in_months+1)
         return pd.DataFrame(data=data, index=row_labels)
 
-    def generate_payment_schedule_with_overpayment_effect(self):
-        ...
+    def generate_payment_schedule_with_overpayment(self):
+        new_df = self.payment_schedule.copy(deep=True)
+        new_df['New installments'] = self.new_all_installments
+        new_df['New remaining'] = self.new_remaining
+        return new_df[['Installments','New installments','Remaining','New remaining']]
 
     def generate_mortgage_sheet(self):
         all_data = [self.loan_amount, self.nominal_rate, self.period_in_months, self.installments_type]
@@ -244,5 +247,8 @@ if __name__ == '__main__':
     print(mortgage.calculation_summary)
     print()
     print(mortgage.payment_schedule)
+    print()
+    print(mortgage.payment_schedule_with_overpayment)
+    print()
 
     save_schedule_to_csv("Payment_schedule.csv")
