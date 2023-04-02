@@ -36,12 +36,14 @@ class Mortgage:
         self.new_remaining = None
 
         self.calculate_loan_characteristics()
-        self.overpayment_saving = self.calculate_overpayment_saving()
+        if self.overpayment:
+            self.overpayment_saving = self.calculate_overpayment_saving()
 
         self.mortgage_sheet = self.generate_mortgage_sheet()
         self.calculation_summary = self.generate_calculation_summary()
         self.payment_schedule = self.generate_payment_schedule()
-        self.payment_schedule_with_overpayment = self.generate_payment_schedule_with_overpayment()
+        if self.overpayment:
+            self.payment_schedule_with_overpayment = self.generate_payment_schedule_with_overpayment()
 
     @property
     def loan_amount(self):
@@ -92,6 +94,8 @@ class Mortgage:
         if overpayment:
             if overpayment <= 0 or overpayment > self.loan_amount:
                 raise ValueError
+            self._overpayment = overpayment
+        else:
             self._overpayment = overpayment
 
     @property
@@ -230,8 +234,9 @@ def save_schedule_to_csv(path_to_save):
 
 if __name__ == '__main__':
     args = parser.parse_args()
+
     """
-    for debug
+    # for debug
     # args.loan = 50000
     # args.rate = 7
     # args.months = 60
@@ -248,7 +253,8 @@ if __name__ == '__main__':
     print()
     print(mortgage.payment_schedule)
     print()
-    print(mortgage.payment_schedule_with_overpayment)
+    if mortgage.overpayment:
+        print(mortgage.payment_schedule_with_overpayment)
     print()
 
     save_schedule_to_csv("Payment_schedule.csv")
