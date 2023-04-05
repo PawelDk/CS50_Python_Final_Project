@@ -1,6 +1,6 @@
 # CS50_Python_Final_Project
 
-A program that calculates various parameters of a mortgage loan.
+This is the program that calculates various parameters of a mortgage loan.
 
 #Planned functionalities:
 ####Main:
@@ -11,7 +11,7 @@ A program that calculates various parameters of a mortgage loan.
   - installment amount
   - remaining amount
 ####Optional:
-- calculate effect of one-time overpayment - lower monthly payment or number of months reduced,
+- calculate effect of one-time overpayment (lower monthly payment)
 - generate payment schedule with overpayment
 - calculate total savings resulting from overpayment
 
@@ -24,4 +24,3 @@ A program that calculates various parameters of a mortgage loan.
 
 ####Optional:
 - Amount of overpayment, USD.
-- Effect of overpayment [lower-installment, reduced-time].

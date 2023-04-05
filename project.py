@@ -3,8 +3,6 @@ import pandas as pd
 
 INSTALLMENTS_TYPE_EQUAL = 'equal'
 INSTALLMENTS_TYPE_DECREASING = 'decreasing'
-OVERPAYMENT_EFFECT_REDUCED_TIME = 'reduced-time'
-OVERPAYMENT_LOWER_INSTALLMENTS = 'lower-installments'
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--loan', '-l', help="Loan amount, USD", type=int)
@@ -12,7 +10,6 @@ parser.add_argument('--rate', '-r', help="Nominal interest rate (per year), %", 
 parser.add_argument('--months', '-m', help="Repayment period, months", type=int)
 parser.add_argument('--installments', '-i', help="Type of installments [equal, decreasing]", type=str)
 parser.add_argument('--overpayment', '-o', help="Overpayment value, USD", type=float)
-parser.add_argument('--overpayment_effect', '-oe', help="Overpayment effect [lower installment, reduced time]", type=str)
 
 class Mortgage:
     def __init__(self, loan_amount, nominal_rate, period_in_months, installments_type,
@@ -22,7 +19,6 @@ class Mortgage:
         self.period_in_months = period_in_months
         self.installments_type = installments_type
         self.overpayment = overpayment
-        self.overpayment_effect = overpayment_effect
 
         self.monthly_payment = None
         self.all_installments = None
@@ -97,16 +93,6 @@ class Mortgage:
             self._overpayment = overpayment
         else:
             self._overpayment = overpayment
-
-    @property
-    def overpayment_effect(self):
-        return self._overpayment_effect
-
-    @overpayment_effect.setter
-    def overpayment_effect(self, overpayment_effect):
-        if overpayment_effect not in [OVERPAYMENT_EFFECT_REDUCED_TIME, OVERPAYMENT_LOWER_INSTALLMENTS, None]:
-            raise ValueError
-        self._overpayment_effect = overpayment_effect
 
     def calculate_loan_characteristics(self):
         # all characteristics
@@ -206,8 +192,8 @@ class Mortgage:
         all_data = [self.loan_amount, self.nominal_rate, self.period_in_months, self.installments_type]
         row_labels = ['Loan amount', 'Nominal interest rate, %', 'Repayment period, months', 'Type of installments']
         if self.overpayment:
-            all_data += ['------', self.overpayment, self.overpayment_effect]
-            row_labels += ['---', 'Overpayment', 'Overpayment effect']
+            all_data += ['------', self.overpayment]
+            row_labels += ['---', 'Overpayment']
 
         data = {'Mortgage attributes': all_data}
 
@@ -233,15 +219,15 @@ if __name__ == '__main__':
 
     """
     # for debug
-    # args.loan = 50000
-    # args.rate = 7
-    # args.months = 60
-    # args.installments = 'equal'
-    # args.overpayment = 100
-    # args.overpayment_effect = 'reduced-time'
+    args.loan = 50000
+    args.rate = 7
+    args.months = 50
+    args.installments = 'decreasing'
+    args.overpayment = 2000
+    args.overpayment_effect = 'reduced-time'
     """
 
-    mortgage = Mortgage(args.loan, args.rate, args.months, args.installments, args.overpayment, args.overpayment_effect)
+    mortgage = Mortgage(args.loan, args.rate, args.months, args.installments, args.overpayment)
 
     print(mortgage.mortgage_sheet)
     print()
