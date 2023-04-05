@@ -213,6 +213,15 @@ class Mortgage:
 def save_schedule_to_csv(path_to_save):
     mortgage.payment_schedule.to_csv(path_to_save)
 
+def calculate_decreasing_installments_saving(loan, rate, months):
+    mortgage_to_calculate_equal = Mortgage(loan, rate, months, INSTALLMENTS_TYPE_EQUAL)
+    mortgage_to_calculate_decreasing = Mortgage(loan, rate, months, INSTALLMENTS_TYPE_DECREASING)
+    return mortgage_to_calculate_equal.total_interest - mortgage_to_calculate_decreasing.total_interest
+
+def calculate_overpayment_saving(loan, rate, months, installments, overpayment):
+    mortgage_to_calculate = Mortgage(loan, rate, months, installments, overpayment)
+    return mortgage_to_calculate.overpayment_saving
+
 
 if __name__ == '__main__':
     args = parser.parse_args()
@@ -240,3 +249,11 @@ if __name__ == '__main__':
     print()
 
     save_schedule_to_csv("Payment_schedule.csv")
+
+    print("calculate_decreasing_installments_saving: ")
+    print(calculate_decreasing_installments_saving(args.loan, args.rate, args.months))
+
+    if mortgage.overpayment:
+        print("calculate_overpayment_saving: ")
+        print(calculate_overpayment_saving(args.loan, args.rate, args.months, args.installments, args.overpayment))
+
