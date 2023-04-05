@@ -233,7 +233,6 @@ if __name__ == '__main__':
     args.months = 50
     args.installments = 'decreasing'
     args.overpayment = 2000
-    args.overpayment_effect = 'reduced-time'
     """
 
     mortgage = Mortgage(args.loan, args.rate, args.months, args.installments, args.overpayment)
