@@ -13,7 +13,7 @@ parser.add_argument('--overpayment', '-o', help="Overpayment value, USD", type=f
 
 class Mortgage:
     def __init__(self, loan_amount, nominal_rate, period_in_months, installments_type,
-                 overpayment=None, overpayment_effect=None):
+                 overpayment=None):
         self.loan_amount = float(loan_amount)
         self.nominal_rate = float(nominal_rate)
         self.period_in_months = period_in_months
@@ -209,18 +209,24 @@ class Mortgage:
 
         return pd.DataFrame(data=data, index=row_labels)
 
+    def save_schedule_to_csv(self, path_to_save):
+        self.payment_schedule.to_csv(path_to_save)
+        if self.overpayment:
+            self.payment_schedule_with_overpayment.to_csv(path_to_save[:-4] + "_with_overpayment.csv")
 
-def save_schedule_to_csv(path_to_save):
-    mortgage.payment_schedule.to_csv(path_to_save)
+
+def calculate_mortgage_sheet(loan, rate, months, installments, overpayment=None):
+    mortgage_to_calculate = Mortgage(loan, rate, months, installments, overpayment)
+    return mortgage_to_calculate.mortgage_sheet
+
+def calculate_overpayment_saving(loan, rate, months, installments, overpayment):
+    mortgage_to_calculate = Mortgage(loan, rate, months, installments, overpayment)
+    return mortgage_to_calculate.overpayment_saving
 
 def calculate_decreasing_installments_saving(loan, rate, months):
     mortgage_to_calculate_equal = Mortgage(loan, rate, months, INSTALLMENTS_TYPE_EQUAL)
     mortgage_to_calculate_decreasing = Mortgage(loan, rate, months, INSTALLMENTS_TYPE_DECREASING)
     return mortgage_to_calculate_equal.total_interest - mortgage_to_calculate_decreasing.total_interest
-
-def calculate_overpayment_saving(loan, rate, months, installments, overpayment):
-    mortgage_to_calculate = Mortgage(loan, rate, months, installments, overpayment)
-    return mortgage_to_calculate.overpayment_saving
 
 
 if __name__ == '__main__':
@@ -247,12 +253,20 @@ if __name__ == '__main__':
         print(mortgage.payment_schedule_with_overpayment)
     print()
 
-    save_schedule_to_csv("Payment_schedule.csv")
+    mortgage.save_schedule_to_csv("Payment_schedule.csv")
 
-    print("calculate_decreasing_installments_saving: ")
-    print(calculate_decreasing_installments_saving(args.loan, args.rate, args.months))
+    print("--- Additional functions usages ---: ")
+    print("calculate_mortgage_sheet: ")
+    if mortgage.overpayment:
+        print(calculate_mortgage_sheet(args.loan, args.rate, args.months, args.installments, args.overpayment))
+    else:
+        print(calculate_mortgage_sheet(args.loan, args.rate, args.months, args.installments))
 
     if mortgage.overpayment:
         print("calculate_overpayment_saving: ")
         print(calculate_overpayment_saving(args.loan, args.rate, args.months, args.installments, args.overpayment))
+
+    print("calculate_decreasing_installments_saving: ")
+    print(calculate_decreasing_installments_saving(args.loan, args.rate, args.months))
+
 
