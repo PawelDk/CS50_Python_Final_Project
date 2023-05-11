@@ -24,3 +24,14 @@ This is the program that calculates various parameters of a mortgage loan.
 
 ####Optional:
 - Amount of overpayment, USD.
+
+#Output:
+### Data frames:
+- mortgage sheet
+- calculation summary
+- payment schedule (with or without overpayment)
+
+Functions available for external calculation:
+- generate_mortgage_sheet
+- calculate_overpayment_saving
+- calculate_decreasing_installments_saving

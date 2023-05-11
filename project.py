@@ -251,7 +251,7 @@ class Mortgage:
             self.payment_schedule_with_overpayment.to_csv(path_to_save[:-4] + "_with_overpayment.csv")
 
 
-def calculate_mortgage_sheet(loan, rate, months, installments, overpayment=None):
+def generate_mortgage_sheet(loan, rate, months, installments, overpayment=None):
     mortgage_to_calculate = Mortgage(loan, rate, months, installments, overpayment)
     return mortgage_to_calculate.mortgage_sheet
 
@@ -294,9 +294,9 @@ if __name__ == '__main__':
     print("--- Additional functions usages ---: ")
     print("calculate_mortgage_sheet: ")
     if mortgage.overpayment:
-        print(calculate_mortgage_sheet(args.loan, args.rate, args.months, args.installments, args.overpayment))
+        print(generate_mortgage_sheet(args.loan, args.rate, args.months, args.installments, args.overpayment))
     else:
-        print(calculate_mortgage_sheet(args.loan, args.rate, args.months, args.installments))
+        print(generate_mortgage_sheet(args.loan, args.rate, args.months, args.installments))
 
     if mortgage.overpayment:
         print("calculate_overpayment_saving: ")
