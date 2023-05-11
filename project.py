@@ -95,6 +95,9 @@ class Mortgage:
             self._overpayment = overpayment
 
     def calculate_loan_characteristics(self):
+        """
+        Calling methods that calculate loan characteristics before and after overpayment.
+        """
         # all characteristics
         self.monthly_payment = self.calculate_monthly_payment(if_overpayment=False)
         self.all_installments = self.calculate_all_installments(if_overpayment=False)
@@ -111,6 +114,9 @@ class Mortgage:
             self.new_remaining = self.calculate_remaining(if_overpayment=True)
 
     def calculate_monthly_payment(self, if_overpayment):
+        """
+        Calculating one of loan characteristics - monthly payment
+        """
         if if_overpayment:
             overpayment = self.overpayment
         else:
@@ -131,6 +137,9 @@ class Mortgage:
             return round(first_month_payment, 2)
 
     def calculate_all_installments(self, if_overpayment):
+        """
+        Calculating one of loan characteristics - all installments
+        """
         if if_overpayment:
             monthly_payment = self.new_monthly_payment
             overpayment = self.overpayment
@@ -150,18 +159,27 @@ class Mortgage:
             return all_installments
 
     def calculate_total_amount(self, if_overpayment):
+        """
+        Calculating one of loan characteristics - total amount
+        """
         if if_overpayment:
             return round(sum(self.new_all_installments), 2)
         else:
             return round(sum(self.all_installments), 2)
 
     def calculate_total_interest(self, if_overpayment):
+        """
+        Calculating one of loan characteristics - total interest
+        """
         if if_overpayment:
             return round(self.new_total_amount - (self.loan_amount - self.overpayment), 2)
         else:
             return round(self.total_amount - self.loan_amount, 2)
 
     def calculate_remaining(self, if_overpayment):
+        """
+        Calculating one of loan characteristics - remainig
+        """
         if if_overpayment:
             remaining = [round(self.new_total_amount - self.new_all_installments[0], 2)]
             for i in range(0, len(self.new_all_installments) - 1):
@@ -174,21 +192,15 @@ class Mortgage:
         return remaining
 
     def calculate_overpayment_saving(self):
+        """
+        Calculating overpayment saving.
+        """
         return round(self.total_interest - self.new_total_interest, 2)
 
-    def generate_payment_schedule(self):
-        data = {'Installments': self.all_installments,
-                'Remaining': self.remaining}
-        row_labels = range(1, self.period_in_months+1)
-        return pd.DataFrame(data=data, index=row_labels)
-
-    def generate_payment_schedule_with_overpayment(self):
-        new_df = self.payment_schedule.copy(deep=True)
-        new_df['New installments'] = self.new_all_installments
-        new_df['New remaining'] = self.new_remaining
-        return new_df[['Installments','New installments','Remaining','New remaining']]
-
     def generate_mortgage_sheet(self):
+        """
+        The method returns a DataFrame with input loan parameters.
+        """
         all_data = [self.loan_amount, self.nominal_rate, self.period_in_months, self.installments_type]
         row_labels = ['Loan amount', 'Nominal interest rate, %', 'Repayment period, months', 'Type of installments']
         if self.overpayment:
@@ -200,6 +212,9 @@ class Mortgage:
         return pd.DataFrame(data=data, index=row_labels)
 
     def generate_calculation_summary(self):
+        """
+        The method returns a DataFrame with loan characteristics calculated based on input parameters.
+        """
         all_data = [self.total_amount, self.total_interest, self.monthly_payment]
         row_labels = ['Repayment amount', 'Total interest', 'Monthly payment']
         if self.overpayment:
@@ -209,7 +224,28 @@ class Mortgage:
 
         return pd.DataFrame(data=data, index=row_labels)
 
+    def generate_payment_schedule(self):
+        """
+        The method returns a DataFrame with calculated payment schedule (not including overpayment).
+        """
+        data = {'Installments': self.all_installments,
+                'Remaining': self.remaining}
+        row_labels = range(1, self.period_in_months+1)
+        return pd.DataFrame(data=data, index=row_labels)
+
+    def generate_payment_schedule_with_overpayment(self):
+        """
+        The method returns a DataFrame with calculated payment schedule (including overpayment).
+        """
+        new_df = self.payment_schedule.copy(deep=True)
+        new_df['New installments'] = self.new_all_installments
+        new_df['New remaining'] = self.new_remaining
+        return new_df[['Installments','New installments','Remaining','New remaining']]
+
     def save_schedule_to_csv(self, path_to_save):
+        """
+        Saving payment schedule to csv file.
+        """
         self.payment_schedule.to_csv(path_to_save)
         if self.overpayment:
             self.payment_schedule_with_overpayment.to_csv(path_to_save[:-4] + "_with_overpayment.csv")
