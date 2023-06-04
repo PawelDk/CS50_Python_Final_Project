@@ -18,45 +18,44 @@ TEST_OVERPAYMENT_1e = 45000
 def mortgage():
     return project.Mortgage(TEST_LOAN_1d, TEST_RATE_1d, TEST_MONTHS_1d, TEST_INSTALLMENTS_1d)
 
-def test_monthly_payment(mortgage):
+# Testing custom function outside of Mortgage class:
+def test_generate_mortgage_sheet(mortgage):
     """
-    Happy path of class, no overpayment.
+    Happy path of generate_mortgage_sheet function, with and without overpayment.
     """
-    assert mortgage.monthly_payment == 1125.00
-
-def test_calculate_mortgage_sheet_no_overpayment(mortgage):
-    """
-    Happy path of function, no overpayment.
-    """
+    # Without overpayment
     data = {'Mortgage attributes': [float(TEST_LOAN_1d), float(TEST_RATE_1d), TEST_MONTHS_1d, TEST_INSTALLMENTS_1d]}
     row_labels = ['Loan amount', 'Nominal interest rate, %', 'Repayment period, months', 'Type of installments']
     test_sheet_to_compare = pd.DataFrame(data=data, index=row_labels)
 
-    test_sheet = project.calculate_mortgage_sheet(TEST_LOAN_1d, TEST_RATE_1d, TEST_MONTHS_1d, TEST_INSTALLMENTS_1d)
+    test_sheet = project.generate_mortgage_sheet(TEST_LOAN_1d, TEST_RATE_1d, TEST_MONTHS_1d, TEST_INSTALLMENTS_1d)
 
     assert isinstance(test_sheet, pd.DataFrame)
     if isinstance(test_sheet, pd.DataFrame):
         assert test_sheet.compare(test_sheet_to_compare).empty
 
-def test_calculate_mortgage_sheet_overpayment(mortgage):
-    """
-    Happy path of function, with overpayment.
-    """
+    # With overpayment
     data = {'Mortgage attributes': [float(TEST_LOAN_1d), float(TEST_RATE_1d), TEST_MONTHS_1d, TEST_INSTALLMENTS_1d,
                                     '------', float(TEST_OVERPAYMENT_1d)]}
     row_labels = ['Loan amount', 'Nominal interest rate, %', 'Repayment period, months', 'Type of installments',
                   '---', 'Overpayment']
     test_sheet_to_compare = pd.DataFrame(data=data, index=row_labels)
 
-    test_sheet = project.calculate_mortgage_sheet(TEST_LOAN_1d, TEST_RATE_1d, TEST_MONTHS_1d, TEST_INSTALLMENTS_1d,
-                                                  TEST_OVERPAYMENT_1d)
+    test_sheet = project.generate_mortgage_sheet(TEST_LOAN_1d, TEST_RATE_1d, TEST_MONTHS_1d, TEST_INSTALLMENTS_1d,
+                                                 TEST_OVERPAYMENT_1d)
     assert isinstance(test_sheet, pd.DataFrame)
     if isinstance(test_sheet, pd.DataFrame):
         assert test_sheet.compare(test_sheet_to_compare).empty
-
 
 
 # def calculate_overpayment_saving(loan, rate, months, installments, overpayment):
 #
 # def calculate_decreasing_installments_saving(loan, rate, months):
 #
+
+# Additional tests:
+def test_monthly_payment(mortgage):
+    """
+    Happy path of class, no overpayment.
+    """
+    assert mortgage.monthly_payment == 1125.00
