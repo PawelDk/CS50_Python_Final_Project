@@ -264,8 +264,7 @@ def calculate_decreasing_installments_saving(loan, rate, months):
     mortgage_to_calculate_decreasing = Mortgage(loan, rate, months, INSTALLMENTS_TYPE_DECREASING)
     return mortgage_to_calculate_equal.total_interest - mortgage_to_calculate_decreasing.total_interest
 
-
-if __name__ == '__main__':
+def main():
     args = parser.parse_args()
 
     """
@@ -306,3 +305,5 @@ if __name__ == '__main__':
     print(calculate_decreasing_installments_saving(args.loan, args.rate, args.months))
 
 
+if __name__ == '__main__':
+    main()
