@@ -35,7 +35,7 @@ class Mortgage:
         if self.overpayment:
             self.overpayment_saving = self.calculate_overpayment_saving()
 
-        self.mortgage_sheet = self.generate_mortgage_sheet()
+        self.mortgage_attributes_sheet = self.generate_mortgage_attributes_sheet()
         self.calculation_summary = self.generate_calculation_summary()
         self.payment_schedule = self.generate_payment_schedule()
         if self.overpayment:
@@ -197,7 +197,7 @@ class Mortgage:
         """
         return round(self.total_interest - self.new_total_interest, 2)
 
-    def generate_mortgage_sheet(self):
+    def generate_mortgage_attributes_sheet(self):
         """
         The method returns a DataFrame with input loan parameters.
         """
@@ -207,7 +207,7 @@ class Mortgage:
             all_data += ['------', self.overpayment]
             row_labels += ['---', 'Overpayment']
 
-        data = {'Mortgage attributes': all_data}
+        data = {'Mortgage attributes sheet': all_data}
 
         return pd.DataFrame(data=data, index=row_labels)
 
@@ -251,15 +251,25 @@ class Mortgage:
             self.payment_schedule_with_overpayment.to_csv(path_to_save[:-4] + "_with_overpayment.csv")
 
 
-def generate_mortgage_sheet(loan, rate, months, installments, overpayment=None):
+def generate_mortgage_attributes_sheet(loan, rate, months, installments, overpayment=None):
+    """
+    :return: Using the Mortgage class, the function generates a mortgage attributes sheet.
+    """
     mortgage_to_calculate = Mortgage(loan, rate, months, installments, overpayment)
-    return mortgage_to_calculate.mortgage_sheet
+    return mortgage_to_calculate.mortgage_attributes_sheet
 
 def calculate_overpayment_saving(loan, rate, months, installments, overpayment):
+    """
+    :return: Using the Mortgage class, the function calculates total savings resulting from the overpayment.
+    """
     mortgage_to_calculate = Mortgage(loan, rate, months, installments, overpayment)
     return mortgage_to_calculate.overpayment_saving
 
 def calculate_decreasing_installments_saving(loan, rate, months):
+    """
+    :return: Using the Mortgage class, the function calculates savings resulting from the choice of decreasing
+    installments.
+    """
     mortgage_to_calculate_equal = Mortgage(loan, rate, months, INSTALLMENTS_TYPE_EQUAL)
     mortgage_to_calculate_decreasing = Mortgage(loan, rate, months, INSTALLMENTS_TYPE_DECREASING)
     return round(mortgage_to_calculate_equal.total_interest - mortgage_to_calculate_decreasing.total_interest, 2)
@@ -278,7 +288,7 @@ def main():
 
     mortgage = Mortgage(args.loan, args.rate, args.months, args.installments, args.overpayment)
 
-    print(mortgage.mortgage_sheet)
+    print(mortgage.mortgage_attributes_sheet)
     print()
     print(mortgage.calculation_summary)
     print()
@@ -291,11 +301,11 @@ def main():
     mortgage.save_schedule_to_csv("Payment_schedule.csv")
 
     print("--- Additional functions usages ---: ")
-    print("calculate_mortgage_sheet: ")
+    print("calculate_mortgage_attributes_sheet: ")
     if mortgage.overpayment:
-        print(generate_mortgage_sheet(args.loan, args.rate, args.months, args.installments, args.overpayment))
+        print(generate_mortgage_attributes_sheet(args.loan, args.rate, args.months, args.installments, args.overpayment))
     else:
-        print(generate_mortgage_sheet(args.loan, args.rate, args.months, args.installments))
+        print(generate_mortgage_attributes_sheet(args.loan, args.rate, args.months, args.installments))
 
     if mortgage.overpayment:
         print("calculate_overpayment_saving: ")
