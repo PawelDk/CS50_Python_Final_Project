@@ -216,10 +216,10 @@ class Mortgage:
         The method returns a DataFrame with loan characteristics calculated based on input parameters.
         """
         all_data = [self.total_amount, self.total_interest, self.monthly_payment]
-        row_labels = ['Repayment amount', 'Total interest', 'Monthly payment']
+        row_labels = ['Total amount to be repaid', 'Total interest', 'Monthly payment']
         if self.overpayment:
             all_data += ['------', self.overpayment_saving, self.new_total_amount, self.new_total_interest, self.new_monthly_payment]
-            row_labels += ['---', 'Overpayment saving', 'New repayment amount', 'New total interest', 'New monthly payment', ]
+            row_labels += ['---', 'Overpayment saving', 'New total amount to be repaid', 'New total interest', 'New monthly payment', ]
         data = {'Calculation result': all_data}
 
         return pd.DataFrame(data=data, index=row_labels)
