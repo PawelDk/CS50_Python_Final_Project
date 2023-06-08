@@ -3,6 +3,16 @@ import pytest
 import pandas as pd
 
 
+"""
+co jeszcze chcialbym tu dodac:
+testy czy utworzyly sie pliki payment schedule?
+corner cases testing exception handling testing
+    LIKE OVERPAYMENT OF MORE THAT OWED? 
+"""
+
+
+
+
 TEST_LOAN_1e = 50000
 TEST_RATE_1e = 7
 TEST_MONTHS_1e = 60
@@ -117,58 +127,58 @@ Main functionalities tests.
 Testing results of all calculations performed to populate output sheets: calculation summary and payment schedules 
 """
 
-@pytest.mark.external_functions_testing
+@pytest.mark.main_functionalities_testing
 def test_total_amount_to_be_repaid_equal(mortgage_equal):
     assert mortgage_equal.total_amount == 59403.6
 
-@pytest.mark.external_functions_testing
+@pytest.mark.main_functionalities_testing
 def test_total_amount_to_be_repaid_decreasing(mortgage_decreasing):
     assert mortgage_decreasing.total_amount == 58895.84
 
-@pytest.mark.external_functions_testing
+@pytest.mark.main_functionalities_testing
 def test_total_interest_equal(mortgage_equal):
     assert mortgage_equal.total_interest == 9403.6
 
-@pytest.mark.external_functions_testing
+@pytest.mark.main_functionalities_testing
 def test_total_interest_decreasing(mortgage_decreasing):
     assert mortgage_decreasing.total_interest == 8895.84
 
-@pytest.mark.external_functions_testing
+@pytest.mark.main_functionalities_testing
 def test_monthly_payment_equal(mortgage_equal):
     assert mortgage_equal.monthly_payment == 990.06
 
-@pytest.mark.external_functions_testing
+@pytest.mark.main_functionalities_testing
 def test_monthly_payment_decreasing(mortgage_decreasing):
     assert mortgage_decreasing.monthly_payment == 1125.00
 
-@pytest.mark.external_functions_testing
+@pytest.mark.main_functionalities_testing
 def test_overpayment_saving_equal(mortgage_equal):
     assert mortgage_equal.overpayment_saving == 940.6
 
-@pytest.mark.external_functions_testing
+@pytest.mark.main_functionalities_testing
 def test_overpayment_saving_decreasing(mortgage_decreasing):
     assert mortgage_decreasing.overpayment_saving == 889.61
 
-@pytest.mark.external_functions_testing
+@pytest.mark.main_functionalities_testing
 def test_new_total_amount_to_be_repaid_equal(mortgage_equal):
     assert mortgage_equal.new_total_amount == 53463.0
 
-@pytest.mark.external_functions_testing
+@pytest.mark.main_functionalities_testing
 def test_new_total_amount_to_be_repaid_decreasing(mortgage_decreasing):
     assert mortgage_decreasing.new_total_amount == 53006.23
 
-@pytest.mark.external_functions_testing
+@pytest.mark.main_functionalities_testing
 def test_new_total_interest_equal(mortgage_equal):
     assert mortgage_equal.new_total_interest == 8463.0
 
-@pytest.mark.external_functions_testing
+@pytest.mark.main_functionalities_testing
 def test_new_total_interest_decreasing(mortgage_decreasing):
     assert mortgage_decreasing.new_total_interest == 8006.23
 
-@pytest.mark.external_functions_testing
+@pytest.mark.main_functionalities_testing
 def test_new_monthly_payment_equal(mortgage_equal):
     assert mortgage_equal.new_monthly_payment == 891.05
 
-@pytest.mark.external_functions_testing
+@pytest.mark.main_functionalities_testing
 def test_new_monthly_payment_decreasing(mortgage_decreasing):
     assert mortgage_decreasing.new_monthly_payment == 1012.5

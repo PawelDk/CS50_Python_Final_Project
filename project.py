@@ -1,6 +1,18 @@
 import argparse
 import pandas as pd
 
+"""
+co jeszcze chcialbym tu dodac:
+VALUES IN SHEETS SHOULD BE DISPLAYED WITH .00 NOT 50.0 OR 50.5
+
+EXCEPTION HANDLING
+
+DO A WITCH HUNT WHAT CAN GO WRONG
+
+DODAJ JESZCZE INSTRUKCJE UZYCIA W README
+
+"""
+
 INSTALLMENTS_TYPE_EQUAL = 'equal'
 INSTALLMENTS_TYPE_DECREASING = 'decreasing'
 
@@ -9,7 +21,7 @@ parser.add_argument('--loan', '-l', help="Loan amount, USD", type=int)
 parser.add_argument('--rate', '-r', help="Nominal interest rate (per year), %", type=int)
 parser.add_argument('--months', '-m', help="Repayment period, months", type=int)
 parser.add_argument('--installments', '-i', help="Type of installments [equal, decreasing]", type=str)
-parser.add_argument('--overpayment', '-o', help="Overpayment value, USD", type=float)
+parser.add_argument('--overpayment', '-o', help="Overpayment value, USD (optional)", type=float)
 
 class Mortgage:
     def __init__(self, loan_amount, nominal_rate, period_in_months, installments_type,
