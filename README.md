@@ -82,25 +82,24 @@ to the folder where the program is saved and executing it with input parameters.
 3. Run the program with all input parameters as described in below.
 
 ### Input parameters:
---loan -l --- Loan amount, USD, type=int
 
---rate -r --- Nominal interest rate (per year), %, type=int
 
---months -m --- Repayment period, months, type=int
-
---installments -i --- Type of installments, "equal" or "decreasing", type=str
-
-(optional) --overpayment -o --- Overpayment value, USD, type=float
+    --loan -l Loan amount, USD, type=int
+    --rate -r Nominal interest rate (per year), %, type=int
+    --months -m Repayment period, months, type=int
+    --installments -i Type of installments, "equal" or "decreasing", type=str
+    --overpayment -o (optional) Overpayment value, USD, type=float
 
 
 ### Examples:
-python project.py -loan=50000 -rate=7 -months=60 -installments='equal'
 
-python project.py -l=50000 -r=7 -m=60 -i='equal' -overpayment=5000 
-
-python project.py -l=50000 -r=7 -m=60 -i='decreasing'
-
-python project.py -l=50000 -r=7 -m=60 -i='decreasing' -o=5000
+    python project.py -loan=50000 -rate=7 -months=60 -installments='equal'
+    
+    python project.py -l=50000 -r=7 -m=60 -i='equal' -overpayment=5000 
+    
+    python project.py -l=50000 -r=7 -m=60 -i='decreasing'
+    
+    python project.py -l=50000 -r=7 -m=60 -i='decreasing' -o=5000
 
 
 
