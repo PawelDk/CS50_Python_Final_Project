@@ -11,8 +11,8 @@ https://cs50.harvard.edu/python/2022/project/
 
 _Thank you to everyone involved in creating this very valuable course!_ 
 
-##Available functionalities
-###Main:
+## Available functionalities
+### Main:
 - calculate the total amount to be repaid,
 - calculate the total interest on the loan,
 - calculate monthly payment:
@@ -21,26 +21,26 @@ _Thank you to everyone involved in creating this very valuable course!_
 - generate basic payment schedule, including for each month:
   - installment amount,
   - amount remaining to be repaid
-###Optional - calculations related to overpayment:
+### Optional - calculations related to overpayment:
 - calculate lower monthly payment after one-time overpayment,
 - generate new payment schedule considering overpayment,
 - calculate total savings resulting from overpayment,
 
-###Additional calculations related to the mortgage:
+### Additional calculations related to the mortgage:
 - calculate savings resulting from the choice of decreasing installments.
 
-##Input
-###Required:
+## Input
+### Required:
 - Loan amount, USD.
 - Nominal interest rate, %.
 - Repayment period, months.
 - Type of installments (equal or decreasing).
 
-###Optional:
+### Optional:
 - Amount of overpayment, USD.
 
-##Output
-###Data frames:
+## Output
+### Data frames:
 - **mortgage attributes sheet:**
   - Loan amount,
   - Nominal interest rate,
@@ -61,7 +61,7 @@ _Thank you to everyone involved in creating this very valuable course!_
   - amount remaining to be paid for each month
   - new amount remaining to be paid for each month (if overpayment is given),
 
-###Functions available for external calculation:
+### Functions available for external calculation:
 
 - **generate_mortgage_attributes_sheet** - Using the Mortgage class, the function generates a mortgage attributes sheet.
 
@@ -69,19 +69,19 @@ _Thank you to everyone involved in creating this very valuable course!_
 
 - **calculate_decreasing_installments_saving** - Using the Mortgage class, the function calculates savings resulting from the choice of decreasing installments.
 
-##How to run example usage of the class prepared in main function
+## How to run example usage of the class prepared in main function
 The Mortgage class can be called from and used in other programs. 
 A sample use of its capabilities as well as results presentation has been prepared 
 in the main function. It can be used from the command line terminal after navigating 
 to the folder where the program is saved and executing it with input parameters.
 
-###Step by step:
+### Step by step:
 
 1. Open terminal.
 2. Navigate to the folder where the program is located.
 3. Run the program with all input parameters as described in below.
 
-###Input parameters:
+### Input parameters:
 --loan -l --- Loan amount, USD, type=int
 
 --rate -r --- Nominal interest rate (per year), %, type=int
@@ -93,7 +93,7 @@ to the folder where the program is saved and executing it with input parameters.
 (optional) --overpayment -o --- Overpayment value, USD, type=float
 
 
-###Examples:
+### Examples:
 python project.py -loan=50000 -rate=7 -months=60 -installments='equal'
 
 python project.py -l=50000 -r=7 -m=60 -i='equal' -overpayment=5000 
@@ -104,7 +104,7 @@ python project.py -l=50000 -r=7 -m=60 -i='decreasing' -o=5000
 
 
 
-##How to use Mortgage class
+## How to use Mortgage class
 The Mortgage class can be called from and used in other programs. 
 
 1. Import Mortgage class.
@@ -112,7 +112,7 @@ The Mortgage class can be called from and used in other programs.
 3. Initialization of the object will run all calculations and their results will be stored as object attributes.
 4. Then you can call the created object to use the described functionalities (see examples below).
 
-###Example:
+### Example:
 
 Initialization of the object
 
@@ -140,7 +140,7 @@ External functions can be used outside the program as well:
 
     project.calculate_decreasing_installments_saving(50000, 7, 60))
 
-##How to execute pytest testing
+## How to execute pytest testing
 
 1. Open terminal.
 2. Navigate to the folder where the program is located.
