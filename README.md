@@ -51,10 +51,11 @@ _Thank you to everyone involved in creating this very valuable course!_
   - Total amount remaining to be repaid,
   - Total interest,
   - Monthly payment,
-  - Overpayment saving (if overpayment is given),
-  - New total amount remaining to be repaid (if overpayment is given),
-  - New total interest (if overpayment is given),
-  - New monthly payment (if overpayment is given).
+  - (if overpayment is given):
+    - Overpayment saving,
+    - New total amount remaining to be repaid,
+    - New total interest,
+    - New monthly payment.
 - **payment schedule:**
   - installment amount for each month
   - new installment amount for each month (if overpayment is given),

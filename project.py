@@ -1,21 +1,33 @@
 import argparse
 import pandas as pd
 
-INSTALLMENTS_TYPE_EQUAL = 'equal'
-INSTALLMENTS_TYPE_DECREASING = 'decreasing'
 
 parser = argparse.ArgumentParser()
-parser.add_argument('--loan', '-l', help="Loan amount, USD", type=int)
-parser.add_argument('--rate', '-r', help="Nominal interest rate (per year), %", type=int)
+parser.add_argument('--loan', '-l', help="Loan amount, USD", type=float)
+parser.add_argument('--rate', '-r', help="Nominal interest rate (per year), %", type=float)
 parser.add_argument('--months', '-m', help="Repayment period, months", type=int)
 parser.add_argument('--installments', '-i', help="Type of installments [equal, decreasing]", type=str)
 parser.add_argument('--overpayment', '-o', help="Overpayment value, USD (optional)", type=float)
 
 class Mortgage:
+    INSTALLMENTS_TYPE_EQUAL = 'equal'
+    INSTALLMENTS_TYPE_DECREASING = 'decreasing'
+    VALUE_ERROR_MESSAGES = {
+        'loan_amount': "\n===========\n\nAn incorrect loan amount was given. Please use a float value greater than "
+                       "0.\n\n",
+        'nominal_rate': "\n===========\n\nAn incorrect nominal rate was given. Please use a float value greater than "
+                        "0.\n\n",
+        'period_in_months': "\n===========\n\nAn incorrect period in months was given. Please use a float value "
+                            "greater than 0.\n\n",
+        'installments_type': "\n===========\n\nAn incorrect input for installments type was given. Please use only "
+                             "values out of: 'equal', 'decreasing'.\n\n",
+        'overpayment': "\n===========\n\nIncorrect value of overpayment was given. Please use a float value greater "
+                       "than 0 and less than or equal to the amount of the loan.\n\n"}
+
     def __init__(self, loan_amount, nominal_rate, period_in_months, installments_type,
                  overpayment=None):
-        self.loan_amount = float(loan_amount)
-        self.nominal_rate = float(nominal_rate)
+        self.loan_amount = loan_amount
+        self.nominal_rate = nominal_rate
         self.period_in_months = period_in_months
         self.installments_type = installments_type
         self.overpayment = overpayment
@@ -50,7 +62,7 @@ class Mortgage:
     @loan_amount.setter
     def loan_amount(self, loan_amount):
         if loan_amount <= 0:
-            raise ValueError
+            raise ValueError(self.VALUE_ERROR_MESSAGES['loan_amount'])
         self._loan_amount = loan_amount
 
     @property
@@ -60,7 +72,7 @@ class Mortgage:
     @nominal_rate.setter
     def nominal_rate(self, nominal_rate):
         if nominal_rate <= 0:
-            raise ValueError
+            raise ValueError(self.VALUE_ERROR_MESSAGES['nominal_rate'])
         self._nominal_rate = nominal_rate
 
     @property
@@ -70,7 +82,7 @@ class Mortgage:
     @period_in_months.setter
     def period_in_months(self, period_in_months):
         if period_in_months <= 0:
-            raise ValueError
+            raise ValueError(self.VALUE_ERROR_MESSAGES['period_in_months'])
         self._period_in_months = period_in_months
 
     @property
@@ -79,8 +91,8 @@ class Mortgage:
 
     @installments_type.setter
     def installments_type(self, installments_type):
-        if installments_type not in [INSTALLMENTS_TYPE_EQUAL, INSTALLMENTS_TYPE_DECREASING]:
-            raise ValueError
+        if installments_type not in [self.INSTALLMENTS_TYPE_EQUAL, self.INSTALLMENTS_TYPE_DECREASING]:
+            raise ValueError(self.VALUE_ERROR_MESSAGES['installments_type'])
         self._installments_type = installments_type
 
     @property
@@ -91,7 +103,7 @@ class Mortgage:
     def overpayment(self, overpayment):
         if overpayment:
             if overpayment <= 0 or overpayment > self.loan_amount:
-                raise ValueError
+                raise ValueError(self.VALUE_ERROR_MESSAGES['overpayment'])
             self._overpayment = overpayment
         else:
             self._overpayment = overpayment
@@ -124,7 +136,7 @@ class Mortgage:
         else:
             overpayment = 0
 
-        if self.installments_type == INSTALLMENTS_TYPE_EQUAL:
+        if self.installments_type == self.INSTALLMENTS_TYPE_EQUAL:
             sigma = 0
             i = 1
             while i <= self.period_in_months:
@@ -133,7 +145,7 @@ class Mortgage:
             monthly_payment = (self.loan_amount - overpayment) / sigma
             return round(monthly_payment, 2)
 
-        elif self.installments_type == INSTALLMENTS_TYPE_DECREASING:
+        elif self.installments_type == self.INSTALLMENTS_TYPE_DECREASING:
             first_month_payment = (self.loan_amount - overpayment) / self.period_in_months * \
                                   (1 + (self.period_in_months * self.nominal_rate / 100 / 12))
             return round(first_month_payment, 2)
@@ -149,10 +161,10 @@ class Mortgage:
             monthly_payment = self.monthly_payment
             overpayment = 0
 
-        if self.installments_type == INSTALLMENTS_TYPE_EQUAL:
+        if self.installments_type == self.INSTALLMENTS_TYPE_EQUAL:
             return [monthly_payment] * self.period_in_months
 
-        elif self.installments_type == INSTALLMENTS_TYPE_DECREASING:
+        elif self.installments_type == self.INSTALLMENTS_TYPE_DECREASING:
             all_installments = []
             for month in reversed(range(1, self.period_in_months + 1)):
                 installment = (self.loan_amount - overpayment) / self.period_in_months * \
@@ -272,8 +284,8 @@ def calculate_decreasing_installments_saving(loan, rate, months):
     :return: Using the Mortgage class, the function calculates savings resulting from the choice of decreasing
     installments.
     """
-    mortgage_to_calculate_equal = Mortgage(loan, rate, months, INSTALLMENTS_TYPE_EQUAL)
-    mortgage_to_calculate_decreasing = Mortgage(loan, rate, months, INSTALLMENTS_TYPE_DECREASING)
+    mortgage_to_calculate_equal = Mortgage(loan, rate, months, 'equal')
+    mortgage_to_calculate_decreasing = Mortgage(loan, rate, months, 'decreasing')
     return round(mortgage_to_calculate_equal.total_interest - mortgage_to_calculate_decreasing.total_interest, 2)
 
 def main():
