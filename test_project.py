@@ -3,16 +3,6 @@ import pytest
 import pandas as pd
 
 
-"""
-co jeszcze chcialbym tu dodac:
-testy czy utworzyly sie pliki payment schedule?
-corner cases testing exception handling testing
-    LIKE OVERPAYMENT OF MORE THAT OWED? 
-"""
-
-
-
-
 TEST_LOAN_1e = 50000
 TEST_RATE_1e = 7
 TEST_MONTHS_1e = 60
@@ -39,7 +29,7 @@ External functions tests.
 Testing functions external to the Mortgage class that were required by the CS50 course final project.
 """
 @pytest.mark.external_functions_testing
-def test_generate_mortgage_sheet():
+def test_generate_mortgage_attributes_sheet():
     """
     Happy paths of generate_mortgage_sheet function,
     with and without overpayment, for both type of installments [equal, decreasing].

@@ -1,18 +1,6 @@
 import argparse
 import pandas as pd
 
-"""
-co jeszcze chcialbym tu dodac:
-VALUES IN SHEETS SHOULD BE DISPLAYED WITH .00 NOT 50.0 OR 50.5
-
-EXCEPTION HANDLING
-
-DO A WITCH HUNT WHAT CAN GO WRONG
-
-DODAJ JESZCZE INSTRUKCJE UZYCIA W README
-
-"""
-
 INSTALLMENTS_TYPE_EQUAL = 'equal'
 INSTALLMENTS_TYPE_DECREASING = 'decreasing'
 
@@ -52,6 +40,8 @@ class Mortgage:
         self.payment_schedule = self.generate_payment_schedule()
         if self.overpayment:
             self.payment_schedule_with_overpayment = self.generate_payment_schedule_with_overpayment()
+
+        pd.options.display.float_format = '{:.2f}'.format
 
     @property
     def loan_amount(self):
