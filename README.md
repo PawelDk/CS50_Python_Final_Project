@@ -132,7 +132,8 @@ Saving generated payment schedule(s) to .csv file using save_schedule_to_csv met
 
     mortgage.save_schedule_to_csv("Payment_schedule.csv")
 
-External functions can be used outside the program as well:
+## How to use external functions
+External functions using mortgage class can be called from other program as well:
 
     project.generate_mortgage_attributes_sheet(50000, 7, 60, 'equal', 5000)
 
