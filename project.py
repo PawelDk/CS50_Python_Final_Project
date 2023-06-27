@@ -22,7 +22,13 @@ class Mortgage:
         'installments_type': "\n===========\n\nAn incorrect input for installments type was given. Please use only "
                              "values out of: 'equal', 'decreasing'.\n\n",
         'overpayment': "\n===========\n\nIncorrect value of overpayment was given. Please use a float value greater "
-                       "than 0 and less than or equal to the amount of the loan.\n\n"}
+                       "than 0 and less than or equal to the amount of the loan.\n\n",
+        'no_loan_amount': "\n===========\n\nNo loan amount was given. Please use a float value greater than 0.\n\n",
+        'no_nominal_rate': "\n===========\n\nNo nominal rate was given. Please use a float value greater than 0.\n\n",
+        'no_period_in_months': "\n===========\n\nNo period in months was given. Please use a float value greater than"
+                               " 0.\n\n",
+        'no_installments_type': "\n===========\n\nNo input for installments type was given. Please use values out of:"
+                                " 'equal', 'decreasing'.\n\n"}
 
     def __init__(self, loan_amount, nominal_rate, period_in_months, installments_type,
                  overpayment=None):
@@ -61,9 +67,12 @@ class Mortgage:
 
     @loan_amount.setter
     def loan_amount(self, loan_amount):
-        if loan_amount <= 0:
-            raise ValueError(self.VALUE_ERROR_MESSAGES['loan_amount'])
-        self._loan_amount = loan_amount
+        if loan_amount:
+            if loan_amount <= 0:
+                raise ValueError(self.VALUE_ERROR_MESSAGES['loan_amount'])
+            self._loan_amount = loan_amount
+        else:
+            raise ValueError(self.VALUE_ERROR_MESSAGES['no_loan_amount'])
 
     @property
     def nominal_rate(self):
@@ -71,9 +80,12 @@ class Mortgage:
 
     @nominal_rate.setter
     def nominal_rate(self, nominal_rate):
-        if nominal_rate <= 0:
-            raise ValueError(self.VALUE_ERROR_MESSAGES['nominal_rate'])
-        self._nominal_rate = nominal_rate
+        if nominal_rate:
+            if nominal_rate <= 0:
+                raise ValueError(self.VALUE_ERROR_MESSAGES['nominal_rate'])
+            self._nominal_rate = nominal_rate
+        else:
+            raise ValueError(self.VALUE_ERROR_MESSAGES['no_nominal_rate'])
 
     @property
     def period_in_months(self):
@@ -81,9 +93,12 @@ class Mortgage:
 
     @period_in_months.setter
     def period_in_months(self, period_in_months):
-        if period_in_months <= 0:
-            raise ValueError(self.VALUE_ERROR_MESSAGES['period_in_months'])
-        self._period_in_months = period_in_months
+        if period_in_months:
+            if period_in_months <= 0:
+                raise ValueError(self.VALUE_ERROR_MESSAGES['period_in_months'])
+            self._period_in_months = period_in_months
+        else:
+            raise ValueError(self.VALUE_ERROR_MESSAGES['no_period_in_months'])
 
     @property
     def installments_type(self):
@@ -91,9 +106,12 @@ class Mortgage:
 
     @installments_type.setter
     def installments_type(self, installments_type):
-        if installments_type not in [self.INSTALLMENTS_TYPE_EQUAL, self.INSTALLMENTS_TYPE_DECREASING]:
-            raise ValueError(self.VALUE_ERROR_MESSAGES['installments_type'])
-        self._installments_type = installments_type
+        if installments_type:
+            if installments_type not in [self.INSTALLMENTS_TYPE_EQUAL, self.INSTALLMENTS_TYPE_DECREASING]:
+                raise ValueError(self.VALUE_ERROR_MESSAGES['installments_type'])
+            self._installments_type = installments_type
+        else:
+            raise ValueError(self.VALUE_ERROR_MESSAGES['no_installments_type'])
 
     @property
     def overpayment(self):
