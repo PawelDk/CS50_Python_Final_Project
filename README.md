@@ -159,3 +159,4 @@ Available markernames:
 
 - main_functionalities_testing
 - external_functions_testing
+- exception_handling_testing
