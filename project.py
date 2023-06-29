@@ -23,11 +23,6 @@ class Mortgage:
                              "of: 'equal', 'decreasing'.\n\n",
         'overpayment': "===========   Incorrect value of overpayment was given. Please use float or int value "
                        "greater than 0 and less than or equal to the amount of the loan.\n\n",
-        'no_loan_amount': "===========   No loan amount was given. Please use float or int value greater than 0.\n\n",
-        'no_nominal_rate': "===========   No nominal rate was given. Please use float or int value greater than 0.\n\n",
-        'no_period_in_months': "===========   No period in months was given. Please use int value greater than 0.\n\n",
-        'no_installments_type': "===========   No input for installments type was given. Please use string out of:"
-                                " 'equal', 'decreasing'.\n\n",
         'loan_amount_wrong_format': "===========   Wrong loan amount format given. Please use float or int value "
                                     "greater than 0.\n\n",
         'nominal_rate_wrong_format': "===========   Wrong nominal rate format given. Please use float or int value "
@@ -39,8 +34,7 @@ class Mortgage:
         'overpayment_wrong_format': "===========   Wrong overpayment format given. Please use float or int value "
                                     "greater than 0 and less than or equal to the amount of the loan.\n\n"}
 
-    def __init__(self, loan_amount, nominal_rate, period_in_months, installments_type,
-                 overpayment=None):
+    def __init__(self, loan_amount, nominal_rate, period_in_months, installments_type, overpayment=None):
         self.loan_amount = loan_amount
         self.nominal_rate = nominal_rate
         self.period_in_months = period_in_months
@@ -307,7 +301,7 @@ class Mortgage:
             self.payment_schedule_with_overpayment.to_csv(path_to_save[:-4] + "_with_overpayment.csv")
 
 
-def generate_mortgage_attributes_sheet(loan=None, rate=None, months=None, installments=None, overpayment=None):
+def generate_mortgage_attributes_sheet(loan, rate, months, installments, overpayment=None):
     """
     :return: Using the Mortgage class, the function generates a mortgage attributes sheet.
     """
@@ -315,7 +309,7 @@ def generate_mortgage_attributes_sheet(loan=None, rate=None, months=None, instal
                                      installments_type=installments, overpayment=overpayment)
     return mortgage_to_calculate.mortgage_attributes_sheet
 
-def calculate_overpayment_saving(loan=None, rate=None, months=None, installments=None, overpayment=None):
+def calculate_overpayment_saving(loan, rate, months, installments, overpayment=None):
     """
     :return: Using the Mortgage class, the function calculates total savings resulting from the overpayment.
     """
@@ -323,7 +317,7 @@ def calculate_overpayment_saving(loan=None, rate=None, months=None, installments
                                      installments_type=installments, overpayment=overpayment)
     return mortgage_to_calculate.overpayment_saving
 
-def calculate_decreasing_installments_saving(loan=None, rate=None, months=None):
+def calculate_decreasing_installments_saving(loan, rate, months):
     """
     :return: Using the Mortgage class, the function calculates savings resulting from the choice of decreasing
     installments.
@@ -346,6 +340,7 @@ def main():
     args.overpayment = 2000
     """
 
+    mortgage = Mortgage(args.loan, args.rate, args.months)
     mortgage = Mortgage(args.loan, args.rate, args.months, args.installments, args.overpayment)
 
     print(mortgage.mortgage_attributes_sheet)

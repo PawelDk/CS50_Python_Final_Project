@@ -172,3 +172,55 @@ def test_new_monthly_payment_equal(mortgage_equal):
 @pytest.mark.main_functionalities_testing
 def test_new_monthly_payment_decreasing(mortgage_decreasing):
     assert mortgage_decreasing.new_monthly_payment == 1012.5
+
+
+"""
+Exception handling tests.
+Testing behavior of the system in case of incorrect input data
+"""
+
+# external functions usage  #todo add validation of TupeError message here
+
+@pytest.mark.exception_handling_testing
+def test_generate_mortgage_attributes_sheet_input_missing():
+    with pytest.raises(TypeError):
+        project.generate_mortgage_attributes_sheet(months=TEST_MONTHS_1e, rate=TEST_RATE_1e,
+                                                   installments=TEST_INSTALLMENTS_1e)
+    with pytest.raises(TypeError):
+        project.generate_mortgage_attributes_sheet(loan=TEST_LOAN_1e, months=TEST_MONTHS_1e,
+                                                   installments=TEST_INSTALLMENTS_1e)
+    with pytest.raises(TypeError):
+        project.generate_mortgage_attributes_sheet(loan=TEST_LOAN_1e, rate=TEST_RATE_1e,
+                                                   installments=TEST_INSTALLMENTS_1e)
+    with pytest.raises(TypeError):
+        project.generate_mortgage_attributes_sheet(loan=TEST_LOAN_1e, months=TEST_MONTHS_1e, rate=TEST_RATE_1e)
+
+def test_calculate_overpayment_saving_input_missing():
+    with pytest.raises(TypeError):
+        project.calculate_overpayment_saving(months=TEST_MONTHS_1e, rate=TEST_RATE_1e,
+                                             installments=TEST_INSTALLMENTS_1e)
+    with pytest.raises(TypeError):
+        project.calculate_overpayment_saving(loan=TEST_LOAN_1e, rate=TEST_RATE_1e,
+                                             installments=TEST_INSTALLMENTS_1e)
+    with pytest.raises(TypeError):
+        project.calculate_overpayment_saving(loan=TEST_LOAN_1e, rate=TEST_RATE_1e,
+                                             installments=TEST_INSTALLMENTS_1e)
+    with pytest.raises(TypeError):
+        project.calculate_overpayment_saving(loan=TEST_LOAN_1e, months=TEST_MONTHS_1e, rate=TEST_RATE_1e)
+
+
+def test_calculate_decreasing_installments_saving_input_missing():
+    with pytest.raises(TypeError):
+        project.calculate_decreasing_installments_saving(months=TEST_MONTHS_1e, rate=TEST_RATE_1e)
+    with pytest.raises(TypeError):
+        project.calculate_decreasing_installments_saving(loan=TEST_LOAN_1e, months=TEST_MONTHS_1e)
+    with pytest.raises(TypeError):
+        project.calculate_decreasing_installments_saving(loan=TEST_LOAN_1e, rate=TEST_RATE_1e)
+
+# class object usage
+def test_all_object_input_missing():
+    with pytest.raises(TypeError) as message:
+        project.Mortgage(TEST_LOAN_1e, TEST_RATE_1e, TEST_MONTHS_1e)
+    assert message.value.args[0] == "__init__() missing 1 required positional argument: 'installments_type'"
+
+# main example usage
