@@ -179,43 +179,57 @@ Exception handling tests.
 Testing behavior of the system in case of incorrect input data
 """
 
-# external functions usage  #todo add validation of TupeError message here
+# external functions usage
 
 @pytest.mark.exception_handling_testing
 def test_generate_mortgage_attributes_sheet_input_missing():
-    with pytest.raises(TypeError):
+    with pytest.raises(TypeError) as message:
+        common_part = "generate_mortgage_attributes_sheet() missing 1 required positional argument: "
         project.generate_mortgage_attributes_sheet(months=TEST_MONTHS_1e, rate=TEST_RATE_1e,
                                                    installments=TEST_INSTALLMENTS_1e)
-    with pytest.raises(TypeError):
-        project.generate_mortgage_attributes_sheet(loan=TEST_LOAN_1e, months=TEST_MONTHS_1e,
-                                                   installments=TEST_INSTALLMENTS_1e)
-    with pytest.raises(TypeError):
+    assert message.value.args[0] == common_part + "'loan'"
+    with pytest.raises(TypeError) as message:
         project.generate_mortgage_attributes_sheet(loan=TEST_LOAN_1e, rate=TEST_RATE_1e,
                                                    installments=TEST_INSTALLMENTS_1e)
-    with pytest.raises(TypeError):
+    assert message.value.args[0] == common_part + "'months'"
+    with pytest.raises(TypeError) as message:
+        project.generate_mortgage_attributes_sheet(loan=TEST_LOAN_1e, months=TEST_MONTHS_1e,
+                                                   installments=TEST_INSTALLMENTS_1e)
+
+    assert message.value.args[0] == common_part + "'rate'"
+    with pytest.raises(TypeError) as message:
         project.generate_mortgage_attributes_sheet(loan=TEST_LOAN_1e, months=TEST_MONTHS_1e, rate=TEST_RATE_1e)
+    assert message.value.args[0] == common_part + "'installments'"
 
 def test_calculate_overpayment_saving_input_missing():
-    with pytest.raises(TypeError):
+    common_part = "calculate_overpayment_saving() missing 1 required positional argument: "
+    with pytest.raises(TypeError) as message:
         project.calculate_overpayment_saving(months=TEST_MONTHS_1e, rate=TEST_RATE_1e,
                                              installments=TEST_INSTALLMENTS_1e)
-    with pytest.raises(TypeError):
+    assert message.value.args[0] == common_part + "'loan'"
+    with pytest.raises(TypeError) as message:
         project.calculate_overpayment_saving(loan=TEST_LOAN_1e, rate=TEST_RATE_1e,
                                              installments=TEST_INSTALLMENTS_1e)
-    with pytest.raises(TypeError):
-        project.calculate_overpayment_saving(loan=TEST_LOAN_1e, rate=TEST_RATE_1e,
+    assert message.value.args[0] == common_part + "'months'"
+    with pytest.raises(TypeError) as message:
+        project.calculate_overpayment_saving(loan=TEST_LOAN_1e, months=TEST_MONTHS_1e,
                                              installments=TEST_INSTALLMENTS_1e)
-    with pytest.raises(TypeError):
+    assert message.value.args[0] == common_part + "'rate'"
+    with pytest.raises(TypeError) as message:
         project.calculate_overpayment_saving(loan=TEST_LOAN_1e, months=TEST_MONTHS_1e, rate=TEST_RATE_1e)
-
+    assert message.value.args[0] == common_part + "'installments'"
 
 def test_calculate_decreasing_installments_saving_input_missing():
-    with pytest.raises(TypeError):
+    common_part = "calculate_decreasing_installments_saving() missing 1 required positional argument: "
+    with pytest.raises(TypeError) as message:
         project.calculate_decreasing_installments_saving(months=TEST_MONTHS_1e, rate=TEST_RATE_1e)
-    with pytest.raises(TypeError):
+    assert message.value.args[0] == common_part + "'loan'"
+    with pytest.raises(TypeError) as message:
         project.calculate_decreasing_installments_saving(loan=TEST_LOAN_1e, months=TEST_MONTHS_1e)
-    with pytest.raises(TypeError):
+    assert message.value.args[0] == common_part + "'rate'"
+    with pytest.raises(TypeError) as message:
         project.calculate_decreasing_installments_saving(loan=TEST_LOAN_1e, rate=TEST_RATE_1e)
+    assert message.value.args[0] == common_part + "'months'"
 
 # class object usage
 def test_all_object_input_missing():

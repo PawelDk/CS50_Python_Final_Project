@@ -340,7 +340,6 @@ def main():
     args.overpayment = 2000
     """
 
-    mortgage = Mortgage(args.loan, args.rate, args.months)
     mortgage = Mortgage(args.loan, args.rate, args.months, args.installments, args.overpayment)
 
     print(mortgage.mortgage_attributes_sheet)
