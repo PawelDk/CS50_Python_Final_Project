@@ -201,6 +201,7 @@ def test_generate_mortgage_attributes_sheet_input_missing():
         project.generate_mortgage_attributes_sheet(loan=TEST_LOAN_1e, months=TEST_MONTHS_1e, rate=TEST_RATE_1e)
     assert message.value.args[0] == common_part + "'installments'"
 
+@pytest.mark.exception_handling_testing
 def test_calculate_overpayment_saving_input_missing():
     common_part = "calculate_overpayment_saving() missing 1 required positional argument: "
     with pytest.raises(TypeError) as message:
@@ -219,6 +220,7 @@ def test_calculate_overpayment_saving_input_missing():
         project.calculate_overpayment_saving(loan=TEST_LOAN_1e, months=TEST_MONTHS_1e, rate=TEST_RATE_1e)
     assert message.value.args[0] == common_part + "'installments'"
 
+@pytest.mark.exception_handling_testing
 def test_calculate_decreasing_installments_saving_input_missing():
     common_part = "calculate_decreasing_installments_saving() missing 1 required positional argument: "
     with pytest.raises(TypeError) as message:
@@ -232,9 +234,33 @@ def test_calculate_decreasing_installments_saving_input_missing():
     assert message.value.args[0] == common_part + "'months'"
 
 # class object usage
-def test_all_object_input_missing():
+@pytest.mark.exception_handling_testing
+def test_all_object_inputs_missing():
     with pytest.raises(TypeError) as message:
-        project.Mortgage(TEST_LOAN_1e, TEST_RATE_1e, TEST_MONTHS_1e)
-    assert message.value.args[0] == "__init__() missing 1 required positional argument: 'installments_type'"
+        project.Mortgage()
+    assert message.value.args[0] == "__init__() missing 4 required positional arguments: 'loan_amount', " \
+                                    "'nominal_rate', 'period_in_months', and 'installments_type'"
 
-# main example usage
+@pytest.mark.exception_handling_testing
+def test_one_object_input_missing():
+    common_part = "__init__() missing 1 required positional argument: "
+    with pytest.raises(TypeError) as message:
+        project.Mortgage(period_in_months=TEST_MONTHS_1e, nominal_rate=TEST_RATE_1e, installments_type=TEST_INSTALLMENTS_1e)
+    assert message.value.args[0] == common_part + "'loan_amount'"
+    with pytest.raises(TypeError) as message:
+        project.Mortgage(loan_amount=TEST_LOAN_1e, nominal_rate=TEST_RATE_1e, installments_type=TEST_INSTALLMENTS_1e)
+    assert message.value.args[0] == common_part + "'period_in_months'"
+    with pytest.raises(TypeError) as message:
+        project.Mortgage(loan_amount=TEST_LOAN_1e, period_in_months=TEST_MONTHS_1e, installments_type=TEST_INSTALLMENTS_1e)
+    assert message.value.args[0] == common_part + "'nominal_rate'"
+    with pytest.raises(TypeError) as message:
+        project.Mortgage(loan_amount=TEST_LOAN_1e, period_in_months=TEST_MONTHS_1e, nominal_rate=TEST_RATE_1e)
+    assert message.value.args[0] == common_part + "'installments_type'"
+
+@pytest.mark.exception_handling_testing
+def test_wrong_format_given():
+    ...
+
+@pytest.mark.exception_handling_testing
+def test_logically_incorrect_input_given():
+    ...
