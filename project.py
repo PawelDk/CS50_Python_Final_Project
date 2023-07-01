@@ -13,25 +13,25 @@ class Mortgage:
     INSTALLMENTS_TYPE_EQUAL = 'equal'
     INSTALLMENTS_TYPE_DECREASING = 'decreasing'
     VALUE_ERROR_MESSAGES = {
-        'loan_amount': "===========   An incorrect loan amount was given. Please use float or int value greater than "
+        'loan_amount': "An incorrect loan amount was given. Please use float or int value greater than "
                        "0.\n\n",
-        'nominal_rate': "===========   An incorrect nominal rate was given. Please use float or int value greater "
+        'nominal_rate': "An incorrect nominal rate was given. Please use float or int value greater "
                         "than 0.\n\n",
-        'period_in_months': "===========   An incorrect period in months was given. Please use int value greater than "
+        'period_in_months': "An incorrect period in months was given. Please use int value greater than "
                             "0.\n\n",
-        'installments_type': "===========   An incorrect input for installments type was given. Please use string out "
+        'installments_type': "An incorrect input for installments type was given. Please use string out "
                              "of: 'equal', 'decreasing'.\n\n",
-        'overpayment': "===========   Incorrect value of overpayment was given. Please use float or int value "
+        'overpayment': "Incorrect value of overpayment was given. Please use float or int value "
                        "greater than 0 and less than or equal to the amount of the loan.\n\n",
-        'loan_amount_wrong_format': "===========   Wrong loan amount format given. Please use float or int value "
+        'loan_amount_wrong_format': "Wrong loan amount format given. Please use float or int value "
                                     "greater than 0.\n\n",
-        'nominal_rate_wrong_format': "===========   Wrong nominal rate format given. Please use float or int value "
+        'nominal_rate_wrong_format': "Wrong nominal rate format given. Please use float or int value "
                                     "greater than 0.\n\n",
-        'period_in_months_wrong_format': "===========   Wrong period in months format given. Please use int value "
+        'period_in_months_wrong_format': "Wrong period in months format given. Please use int value "
                                     "greater than 0.\n\n",
-        'installments_type_wrong_format': "===========   Wrong installments type format given. Please use string out "
+        'installments_type_wrong_format': "Wrong installments type format given. Please use string out "
                                           "of: 'equal', 'decreasing'.\n\n",
-        'overpayment_wrong_format': "===========   Wrong overpayment format given. Please use float or int value "
+        'overpayment_wrong_format': "Wrong overpayment format given. Please use float or int value "
                                     "greater than 0 and less than or equal to the amount of the loan.\n\n"}
 
     def __init__(self, loan_amount, nominal_rate, period_in_months, installments_type, overpayment=None):

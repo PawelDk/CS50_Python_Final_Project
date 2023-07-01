@@ -159,4 +159,7 @@ Available markernames:
 
 - main_functionalities_testing
 - external_functions_testing
-- exception_handling_testing
+- exception_handling_testing_external_functions
+- exception_handling_testing_object_init
+- exception_handling_testing_wrong_format
+- exception_handling_testing_logically_incorrect_input
