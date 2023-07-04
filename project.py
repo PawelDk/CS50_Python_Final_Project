@@ -21,7 +21,7 @@ class Mortgage:
                             "0.\n\n",
         'installments_type': "An incorrect input for installments type was given. Please use string out "
                              "of: 'equal', 'decreasing'.\n\n",
-        'overpayment': "Incorrect value of overpayment was given. Please use float or int value "
+        'overpayment': "An incorrect value of overpayment was given. Please use float or int value "
                        "greater than 0 and less than or equal to the amount of the loan.\n\n",
         'loan_amount_wrong_format': "Wrong loan amount format given. Please use float or int value "
                                     "greater than 0.\n\n",
@@ -70,15 +70,12 @@ class Mortgage:
 
     @loan_amount.setter
     def loan_amount(self, loan_amount):
-        if loan_amount:
-            if isinstance(loan_amount, float) or isinstance(loan_amount, int):
-                if loan_amount <= 0:
-                    raise ValueError(self.VALUE_ERROR_MESSAGES['loan_amount'])
-                self._loan_amount = loan_amount
-            else:
-                raise ValueError(self.VALUE_ERROR_MESSAGES['loan_amount_wrong_format'])
+        if isinstance(loan_amount, float) or isinstance(loan_amount, int):
+            if loan_amount <= 0:
+                raise ValueError(self.VALUE_ERROR_MESSAGES['loan_amount'])
+            self._loan_amount = loan_amount
         else:
-            raise ValueError(self.VALUE_ERROR_MESSAGES['no_loan_amount'])
+            raise ValueError(self.VALUE_ERROR_MESSAGES['loan_amount_wrong_format'])
 
     @property
     def nominal_rate(self):
@@ -86,15 +83,12 @@ class Mortgage:
 
     @nominal_rate.setter
     def nominal_rate(self, nominal_rate):
-        if nominal_rate:
-            if isinstance(nominal_rate, float) or isinstance(nominal_rate, int):
-                if nominal_rate <= 0:
-                    raise ValueError(self.VALUE_ERROR_MESSAGES['nominal_rate'])
-                self._nominal_rate = nominal_rate
-            else:
-                raise ValueError(self.VALUE_ERROR_MESSAGES['nominal_rate_wrong_format'])
+        if isinstance(nominal_rate, float) or isinstance(nominal_rate, int):
+            if nominal_rate <= 0:
+                raise ValueError(self.VALUE_ERROR_MESSAGES['nominal_rate'])
+            self._nominal_rate = nominal_rate
         else:
-            raise ValueError(self.VALUE_ERROR_MESSAGES['no_nominal_rate'])
+            raise ValueError(self.VALUE_ERROR_MESSAGES['nominal_rate_wrong_format'])
 
     @property
     def period_in_months(self):
@@ -102,15 +96,12 @@ class Mortgage:
 
     @period_in_months.setter
     def period_in_months(self, period_in_months):
-        if period_in_months:
-            if isinstance(period_in_months, int):
-                if period_in_months <= 0:
-                    raise ValueError(self.VALUE_ERROR_MESSAGES['period_in_months'])
-                self._period_in_months = period_in_months
-            else:
-                raise ValueError(self.VALUE_ERROR_MESSAGES['period_in_months_wrong_format'])
+        if isinstance(period_in_months, int):
+            if period_in_months <= 0:
+                raise ValueError(self.VALUE_ERROR_MESSAGES['period_in_months'])
+            self._period_in_months = period_in_months
         else:
-            raise ValueError(self.VALUE_ERROR_MESSAGES['no_period_in_months'])
+            raise ValueError(self.VALUE_ERROR_MESSAGES['period_in_months_wrong_format'])
 
     @property
     def installments_type(self):
@@ -118,15 +109,12 @@ class Mortgage:
 
     @installments_type.setter
     def installments_type(self, installments_type):
-        if installments_type:
-            if isinstance(installments_type, str):
-                if installments_type not in [self.INSTALLMENTS_TYPE_EQUAL, self.INSTALLMENTS_TYPE_DECREASING]:
-                    raise ValueError(self.VALUE_ERROR_MESSAGES['installments_type'])
-                self._installments_type = installments_type
-            else:
-                raise ValueError(self.VALUE_ERROR_MESSAGES['installments_type_wrong_format'])
+        if isinstance(installments_type, str):
+            if installments_type not in [self.INSTALLMENTS_TYPE_EQUAL, self.INSTALLMENTS_TYPE_DECREASING]:
+                raise ValueError(self.VALUE_ERROR_MESSAGES['installments_type'])
+            self._installments_type = installments_type
         else:
-            raise ValueError(self.VALUE_ERROR_MESSAGES['no_installments_type'])
+            raise ValueError(self.VALUE_ERROR_MESSAGES['installments_type_wrong_format'])
 
     @property
     def overpayment(self):
