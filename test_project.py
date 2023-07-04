@@ -324,7 +324,80 @@ def test_wrong_format_given_overpayment():
                          installments_type=TEST_INSTALLMENTS_1e, overpayment='some_string')
     assert message.value.args[0] == correct_message
 
+@pytest.mark.exception_handling_testing_logically_incorrect_input
+def test_loan_less_than_or_equal_to_0():
+    correct_message = "An incorrect loan amount was given. Please use float or int value greater than 0.\n\n"
+
+    with pytest.raises(ValueError) as message:
+        project.Mortgage(loan_amount=-1000000, nominal_rate=TEST_RATE_1e, period_in_months=TEST_MONTHS_1e,
+                         installments_type=TEST_INSTALLMENTS_1e)
+    assert message.value.args[0] == correct_message
+
+    with pytest.raises(ValueError) as message:
+        project.Mortgage(loan_amount=0, nominal_rate=TEST_RATE_1e, period_in_months=TEST_MONTHS_1e,
+                         installments_type=TEST_INSTALLMENTS_1e)
+    assert message.value.args[0] == correct_message
 
 @pytest.mark.exception_handling_testing_logically_incorrect_input
-def test_logically_incorrect_input_given():
-    ...
+def test_rate_less_than_or_equal_to_0():
+    correct_message = "An incorrect nominal rate was given. Please use float or int value greater than 0.\n\n"
+
+    with pytest.raises(ValueError) as message:
+        project.Mortgage(loan_amount=TEST_LOAN_1e, nominal_rate=-5, period_in_months=TEST_MONTHS_1e,
+                         installments_type=TEST_INSTALLMENTS_1e)
+    assert message.value.args[0] == correct_message
+
+    with pytest.raises(ValueError) as message:
+        project.Mortgage(loan_amount=TEST_LOAN_1e, nominal_rate=0, period_in_months=TEST_MONTHS_1e,
+                         installments_type=TEST_INSTALLMENTS_1e)
+    assert message.value.args[0] == correct_message
+
+@pytest.mark.exception_handling_testing_logically_incorrect_input
+def test_months_less_than_or_equal_to_0():
+    correct_message = "An incorrect period in months was given. Please use int value greater than 0.\n\n"
+
+    with pytest.raises(ValueError) as message:
+        project.Mortgage(loan_amount=TEST_LOAN_1e, nominal_rate=TEST_RATE_1e, period_in_months=-5,
+                         installments_type=TEST_INSTALLMENTS_1e)
+    assert message.value.args[0] == correct_message
+
+    with pytest.raises(ValueError) as message:
+        project.Mortgage(loan_amount=TEST_LOAN_1e, nominal_rate=TEST_RATE_1e, period_in_months=0,
+                         installments_type=TEST_INSTALLMENTS_1e)
+    assert message.value.args[0] == correct_message
+
+@pytest.mark.exception_handling_testing_logically_incorrect_input
+def test_overpayment_less_than_0():
+    # overpayment=0 will not raise ValueError because it will be treated like None
+    correct_message = "An incorrect value of overpayment was given. Please use float or int value greater than 0 and" \
+                      " less than or equal to the amount of the loan.\n\n"
+
+    with pytest.raises(ValueError) as message:
+        project.Mortgage(loan_amount=TEST_LOAN_1e, nominal_rate=TEST_RATE_1e, period_in_months=TEST_MONTHS_1e,
+                         installments_type=TEST_INSTALLMENTS_1e, overpayment=-500)
+    assert message.value.args[0] == correct_message
+
+@pytest.mark.exception_handling_testing_logically_incorrect_input
+def test_overpayment_more_than_loan():
+    correct_message = "An incorrect value of overpayment was given. Please use float or int value greater than 0 and" \
+                      " less than or equal to the amount of the loan.\n\n"
+
+    with pytest.raises(ValueError) as message:
+        project.Mortgage(loan_amount=TEST_LOAN_1e, nominal_rate=TEST_RATE_1e, period_in_months=TEST_MONTHS_1e,
+                         installments_type=TEST_INSTALLMENTS_1e, overpayment=2*TEST_LOAN_1e)
+    assert message.value.args[0] == correct_message
+
+@pytest.mark.exception_handling_testing_logically_incorrect_input
+def test_installments_out_of_list():
+    correct_message = "An incorrect input for installments type was given. Please use string out of: 'equal'," \
+                      " 'decreasing'.\n\n"
+
+    with pytest.raises(ValueError) as message:
+        project.Mortgage(loan_amount=TEST_LOAN_1e, nominal_rate=TEST_RATE_1e, period_in_months=TEST_MONTHS_1e,
+                         installments_type='decr')
+    assert message.value.args[0] == correct_message
+
+    with pytest.raises(ValueError) as message:
+        project.Mortgage(loan_amount=TEST_LOAN_1e, nominal_rate=TEST_RATE_1e, period_in_months=TEST_MONTHS_1e,
+                         installments_type='EQUAL')
+    assert message.value.args[0] == correct_message
