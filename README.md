@@ -1,15 +1,18 @@
-# CS50_Python_Final_Project
+# CS50 Python Final Project - A program calculating the parameters of a mortgage loan.
 
 This is the program that calculates various parameters of a mortgage loan. 
 It was prepared as a final project of the course - **"CS50’s Introduction to Programming with Python".**  
 
-Course page: 
+#### Course page: 
 https://cs50.harvard.edu/python/2022/
 
-Final project requirements:
+#### Final project requirements:
 https://cs50.harvard.edu/python/2022/project/
 
 _Thank you to everyone involved in creating this very valuable course!_ 
+
+#### Video Demo
+https://youtu.be/jt-Iw8lga-w
 
 ## Available functionalities
 ### Main:
@@ -70,7 +73,7 @@ _Thank you to everyone involved in creating this very valuable course!_
 
 - **calculate_decreasing_installments_saving** - Using the Mortgage class, the function calculates savings resulting from the choice of decreasing installments.
 
-## How to run example usage of the class prepared in main function
+## How to run "project.py" file - example usage of Mortgage class
 The Mortgage class can be called from and used in other programs. 
 A sample use of its capabilities as well as results presentation has been prepared 
 in the main function. It can be used from the command line terminal after navigating 
@@ -139,7 +142,7 @@ External functions using mortgage class can be called from other program as well
 
     project.calculate_overpayment_saving(50000, 7, 60, 'equal', 5000)
 
-    project.calculate_decreasing_installments_saving(50000, 7, 60))
+    project.calculate_decreasing_installments_saving(50000, 7, 60)
 
 ## How to execute pytest testing
 

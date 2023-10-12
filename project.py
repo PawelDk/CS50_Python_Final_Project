@@ -319,15 +319,6 @@ def calculate_decreasing_installments_saving(loan, rate, months):
 def main():
     args = parser.parse_args()
 
-    """
-    # for debug
-    args.loan = 50000
-    args.rate = 7
-    args.months = 50
-    args.installments = 'decreasing'
-    args.overpayment = 2000
-    """
-
     mortgage = Mortgage(args.loan, args.rate, args.months, args.installments, args.overpayment)
 
     print(mortgage.mortgage_attributes_sheet)
